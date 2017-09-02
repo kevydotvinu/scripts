@@ -1,3 +1,4 @@
+#!/bin/bash
 function loading {
 	clear
 	echo "Auto Poweroff Scheduled For Battery State 50%"

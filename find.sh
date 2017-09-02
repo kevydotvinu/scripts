@@ -1,7 +1,10 @@
 #!/bin/bash
-find $HOME -iname "*.pdf" | while read f;
+function find { find $HOME -iname "*.pdf" | \
+while read f;
 do
-	if [[ $f == *.pdf ]]; then
-	cp -f "$f" /home/kevy/Test;
-	fi
-done 
+  if [[ $f == *.pdf ]]; then
+  mkdir -p $HOME/pdf
+  cp -f "$f" $HOME/pdf
+  fi
+done
+}
