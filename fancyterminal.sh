@@ -50,7 +50,14 @@ function install_vim_plugin {
 	git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 }
 
-install_packages
-#append_conf_files
-fetch_conf_files
-install_vim_plugin
+type powerline &>/dev/null
+if [ $? == 1 ] ; then
+	install_packages
+	#append_conf_files
+	fetch_conf_files
+	install_vim_plugin
+	echo "SUCCESS"
+else
+	echo "ALREADY INSTALLED"
+fi
+

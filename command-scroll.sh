@@ -10,5 +10,6 @@ sleep 1s
 done
 }
 
-export -f fetch
-xterm -e "fetch"
+#export -f fetch
+#xterm -e "fetch"
+fetch
