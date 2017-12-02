@@ -13,24 +13,25 @@
 # - Original code
 
 function launch {
+	# Launches Ubuntu Server 16.04 LTS (HVM), SSD Volume Type instance
 	echo
 	aws ec2 run-instances \
 		--count 1 --instance-type t2.micro \
 		--key-name AWS_key_pair --security-groups default \
 		--image-id ami-f3e5aa9c
-	echo
 }
 
 function connect {
-	echo
-	COUNT=$(aws ec2 describe-instances \
+	# Connects to instances
+	local COUNT=$(aws ec2 describe-instances \
 		--filters "Name=instance-state-name,Values=running" \
 		--output=table | grep PublicIpAdd | awk '{print $4}' | wc -l)
-	VALUES=$(aws ec2 describe-instances \
+	local IP=$(aws ec2 describe-instances \
 		--filters "Name=instance-state-name,Values=running" \
 		--output=table | grep PublicIpAdd | awk '{print $4}' | xargs)
+	echo
 	if [[ COUNT != 1 ]]; then
-		select CHOICE in $VALUES exit
+		select CHOICE in $IP exit
 		do
 			if [[ $CHOICE != exit ]]; then
 				ssh -i ~/Downloads/AWS_key_pair.pem \
@@ -38,30 +39,29 @@ function connect {
 			elif [[ $CHOICE == exit ]]; then
 				break
 			fi
-
 		done
 	fi
-	echo
 }
 
 function terminate {
+	# Terminates instances
 	echo
 	aws ec2 terminate-instances \
 		--instance-ids $(aws ec2 describe-instances \
 		--filters "Name=instance-state-name,Values=running" \
 		--output=table | grep -m1 InstanceId | awk '{print $4}')
-	echo
 }
 
 function list {
+	# Lists instances
 	echo
 	echo PublicIP
 	aws ec2 describe-instances \
 		--filters "Name=instance-state-name,Values=running" \
 		--output=table | grep PublicIpAddress | awk '{print $4}'
-	echo
 }
 
+# Runs script
 PS3=$'\n'"AWS EC2 instances Asia Pacific (Mumbai)"$'\n'"Press 1 for first, ENTER for choice"$'\n'"#?) "
 select choice in launch connect terminate list exit
 do
