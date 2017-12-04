@@ -56,6 +56,7 @@ if [ $? == 1 ] ; then
 	#append_conf_files
 	fetch_conf_files
 	install_vim_plugin
+	echo
 	echo "SUCCESS"
 else
 	echo "ALREADY INSTALLED"
