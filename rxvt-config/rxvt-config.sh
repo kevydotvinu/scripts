@@ -13,6 +13,7 @@
 # - Original code
 
 function rxvt_config {
+local DIR=$(pwd)
 sudo apt install -y rxvt-unicode-256color
 type rxvt-unicode
 if [[ $? == 0 ]]; then
@@ -30,8 +31,7 @@ if [[ $? == 0 ]]; then
 	sudo update-alternatives --config x-terminal-emulator
 	cd
 fi
-local PWD=$(pwd)
-sudo cp $PWD/clipboard /usr/lib/urxvt/perl/
+sudo cp $DIR/clipboard /usr/lib/urxvt/perl/
 }
 
 # Configure rxvt-unicode
