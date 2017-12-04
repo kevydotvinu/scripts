@@ -30,6 +30,8 @@ if [[ $? == 0 ]]; then
 	sudo update-alternatives --config x-terminal-emulator
 	cd
 fi
+local PWD=$(pwd)
+sudo cp $PWD/clipboard /usr/lib/urxvt/perl/
 }
 
 # Configure rxvt-unicode
