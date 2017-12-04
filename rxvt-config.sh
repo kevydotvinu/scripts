@@ -16,18 +16,19 @@ function rxvt_config {
 sudo apt install -y rxvt-unicode-256color
 type rxvt-unicode
 if [[ $? == 0 ]]; then
-mkdir ~/GitHub
-cd ~/GitHub
-git clone https://github.com/kevydotvinu/dotfiles.git
-echo "Xresources.rxvt copied" && cp dotfiles/.Xresources.rxvt ~/
-echo "Xresources.rxvt added to .xinitrc" && echo "xrdb -merge ~/.Xresources.rxvt" >> ~/.xinitrc
-echo ".bashrc copied" && cp dotfiles/.bashrc ~/
-echo ".bash_funcs copied" && cp dotfiles/.bash_funcs ~/
-echo ".bash_alias copied" && cp dotfiles/.bash_alias ~/
-echo ".fonts copied" && cp -r dotfiles/.fonts/ ~/
-echo "Xresources updated" && xrdb -merge ~/.Xresources.rxvt
-sudo update-alternatives --config x-terminal-emulator
-cd
+	mkdir ~/GitHub
+	cd ~/GitHub
+	git clone https://github.com/kevydotvinu/dotfiles.git
+	echo "Xresources.rxvt copied" && cp dotfiles/.Xresources.rxvt ~/
+	echo "Xresources.rxvt added to .xinitrc" && \
+		echo "xrdb -merge ~/.Xresources.rxvt" >> ~/.xinitrc
+	echo ".bashrc copied" && cp dotfiles/.bashrc ~/
+	echo ".bash_funcs copied" && cp dotfiles/.bash_funcs ~/
+	echo ".bash_alias copied" && cp dotfiles/.bash_alias ~/
+	echo ".fonts copied" && cp -r dotfiles/.fonts/ ~/
+	echo "Xresources updated" && xrdb -merge ~/.Xresources.rxvt
+	sudo update-alternatives --config x-terminal-emulator
+	cd
 fi
 }
 

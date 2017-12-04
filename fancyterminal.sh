@@ -1,20 +1,20 @@
 #!/bin/bash
-##
-## Copyright 2017 kevydotvinu.github.com
-##
-## NAME
-##     Fancy Terminal - terminal styling
-## SYNOPSIS
-##     bash fancyterminal.sh
-##
-##     This script is written for Debian 9 (Stretch)
-##
-## DESCRIPTION
-##     This script is the configuration script to build a fancy terminal
-##
-## CHANGELOG
-##   * Tue Oct 23 2017 Vinu K <kevy.vinu@gmail.com>
-##   - original code
+#
+# Copyright 2017 kevydotvinu.github.com
+#
+# NAME
+#     Fancy Terminal - terminal styling
+# SYNOPSIS
+#     bash fancyterminal.sh
+#
+#     This script is written for Debian 9 (Stretch)
+#
+# DESCRIPTION
+#     This script is the configuration script to build a fancy terminal
+#
+# CHANGELOG
+#   * Tue Oct 23 2017 Vinu K <kevy.vinu@gmail.com>
+#   - original code
 
 function install_packages {
 	sudo apt-get install python-pip git zsh vim-gtk
