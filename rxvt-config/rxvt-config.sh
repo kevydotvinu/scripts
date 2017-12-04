@@ -14,7 +14,7 @@
 
 function rxvt_config {
 local DIR=$(pwd)
-sudo apt install -y rxvt-unicode-256color
+sudo apt install -y rxvt-unicode-256color xsel
 type rxvt-unicode
 if [[ $? == 0 ]]; then
 	mkdir ~/GitHub
