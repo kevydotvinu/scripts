@@ -13,7 +13,7 @@
 # - Original code
 
 # declare ssh key path
-KEY="~/Downloads/AWS_key_pair.pem"
+KEY="Paste your ssh key's full path"
 
 function launch {
 	# Launches Ubuntu Server 16.04 LTS (HVM), SSD Volume Type instance
