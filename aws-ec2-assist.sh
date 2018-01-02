@@ -12,6 +12,9 @@
 # * Fri Dec 1 2017 Vinu K <kevy.vinu@gmail.com>
 # - Original code
 
+# declare ssh key path
+KEY="~/Downloads/AWS_key_pair.pem"
+
 function launch {
 	# Launches Ubuntu Server 16.04 LTS (HVM), SSD Volume Type instance
 	echo
@@ -34,7 +37,7 @@ function connect {
 		select CHOICE in $IP exit
 		do
 			if [[ $CHOICE != exit ]]; then
-				ssh -i ~/Downloads/AWS_key_pair.pem \
+				ssh -i $KEY \
 					ubuntu@$CHOICE
 			elif [[ $CHOICE == exit ]]; then
 				break
