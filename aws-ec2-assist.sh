@@ -13,7 +13,7 @@
 # - Original code
 
 # declare ssh key path
-KEY="Paste your ssh key's full path"
+KEY="/key.pem"
 
 function launch {
 	# Launches Ubuntu Server 16.04 LTS (HVM), SSD Volume Type instance
@@ -55,6 +55,24 @@ function terminate {
 		--output=table | grep -m1 InstanceId | awk '{print $4}')
 }
 
+function stop {
+	# Stops instances
+	echo
+	aws ec2 stop-instances \
+		--instance-ids $(aws ec2 describe-instances \
+		--filters "Name=instance-state-name,Values=running" \
+		--output=table | grep -m1 InstanceId | awk '{print $4}')
+}
+
+function start {
+	# Starts instances
+	echo
+	aws ec2 start-instances \
+		--instance-ids $(aws ec2 describe-instances \
+		--filters "Name=instance-state-name,Values=stopped" \
+		--output=table | grep -m1 InstanceId | awk '{print $4}')
+}
+
 function list {
 	# Lists instances
 	echo
@@ -66,7 +84,7 @@ function list {
 
 # Runs script
 PS3=$'\n'"AWS EC2 instances Asia Pacific (Mumbai)"$'\n'"Press 1 for first, ENTER for choice"$'\n'"#?) "
-select choice in launch connect terminate list exit
+select choice in launch connect terminate list start stop exit
 do
 	if [[ $choice == launch ]]; then
 		launch
@@ -76,6 +94,10 @@ do
 		terminate
 	elif [[ $choice == list ]]; then
 		list
+	elif [[ $choice == start ]]; then
+		start
+	elif [[ $choice == stop ]]; then
+		stop
 	elif [[ $choice == exit ]]; then
 		exit 0
 	fi
