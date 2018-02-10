@@ -25,7 +25,7 @@ function DOMAIN_CHECK {
 # Check if domain already exists
 virsh dominfo $NAME > /dev/null 2>&1
 if [ "$?" -eq 0 ]; then
-    echo -n "[WARNING] $NAME already exists.  "
+    echo -e -n "[\e[31mWARNING\e[m] $NAME already exists.  "
     read -p "Do you want to overwrite $NAME [y/N]? " -r
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         echo ""
@@ -66,13 +66,6 @@ runcmd:
   - [ yum, -y, remove, cloud-init ]
   - [ apt-get, -y, remove, cloud-init ]
 
-# Create user
-users:
-  - default
-  - name: user
-    sudo: ALL=(ALL) NOPASSWD:ALL
-    primary-group: user
-
 # Configure where output will go
 output: 
   all: ">> /var/log/cloud-init.log"
@@ -100,7 +93,8 @@ genisoimage -output $CI_ISO -volid cidata -joliet -r $USER_DATA $META_DATA &>> $
 
 function CREATE_VM {
 echo "$(date -R) Installing the domain and adjusting the configuration..."
-echo "[INFO] Installing with the following parameters:"
+echo
+echo -e "[\e[36mINFO\e[m] Installing with the following parameters:"
 echo "virt-install --import --name $NAME --ram $MEM --vcpus $CPUS --disk
 $DISK,format=raw,bus=virtio --disk $CI_ISO,device=cdrom --network
 bridge=$BRIDGE,model=virtio --os-type=linux --os-variant=rhel6 --noautoconsole"
@@ -109,6 +103,7 @@ virt-install --import --name $NAME --ram $MEM --vcpus $CPUS --disk \
 $DISK,format=qcow2,bus=virtio --disk $CI_ISO,device=cdrom --network \
 bridge=$BRIDGE,model=virtio --os-type=linux --os-variant=rhel6 --noautoconsole
 
+echo "Please wait while we retrive your IP"
 MAC=$(virsh dumpxml $NAME | awk -F\' '/mac address/ {print $2}')
 while true
 do
@@ -116,28 +111,28 @@ do
          -n 1 | awk '{print $2}' | sed -e s/\"//g -e s/,//)
     if [ "$IP" = "" ]
     then
-        sleep 1
+        sleep 2
+	echo -n .
     else
         break
     fi
 done
 
 # Eject cdrom
+echo
 echo "$(date -R) Cleaning up cloud-init..."
 virsh change-media $NAME hda --eject --config >> $NAME.log
 
 # Remove the unnecessary cloud init files
-rm $USER_DATA $CI_ISO
-
+rm -f $USER_DATA $CI_ISO
 echo -e "$(date -R) DONE. SSH to \e[1;36m$NAME\e[m using \e[31m$IP\e[m, with  username \e[35m$USERNAME\e[m."
-
 popd > /dev/null
 }
 
 # Declare variables
 ARG=$#
 NAME=$1
-DIR=~/libvirt/images
+DIR=$(/bin/pwd)
 MEM=750
 CPUS=1
 BRIDGE=virbr1
