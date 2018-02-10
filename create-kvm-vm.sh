@@ -6,7 +6,7 @@
 # SYNOPSIS
 #	bash create_vm.sh
 #
-# DESCRIPTION
+# DESCRIBTION
 #	It creates VM in KVM with cloud images instantly
 #
 # CHANGELOG
@@ -69,6 +69,15 @@ runcmd:
 # Configure where output will go
 output: 
   all: ">> /var/log/cloud-init.log"
+
+# Create users
+users:
+  - name: $USERNAME
+    ssh-authorized-keys:
+      - $SSH_PUBLIC_KEY
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    groups: sudo
+    shell: /bin/bash
 
 # configure interaction with ssh server
 ssh_svcname: ssh
@@ -144,7 +153,7 @@ DISK=$NAME.qcow2
 SSH_PUBLIC_KEY="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyEJ0y0Ua939iJ4q2YVa27cRCWuYMquiFuZT826NaNMSJSKDe+/VxUk+6roZvCZctaYjjSUeUb+LaSDCjWNimc7ESfK9bm+bSVs9aBe6+67uLZKUiedozW59NfGjgj3bvX0POTJghKTzR4TrN4uOuvdZ4cBTLOpq7u4JXoCxpFIvwDl2ilYsWyA0DpwLIoXYjdnIZv3A7IkYg2u+6ss9Gpe5cDavb3/KYWx3n18D00vbS6ulHSypBjy336mhtDEhfyEhnq3ZIzk05bZSIbd69CeYDNCuU+QI6fXG4/CWxl0FiyG+DzzuWLR/SjUjFikQHdrebn59IgFkntkSqypctR kevy@Vinu-PC"
 
 IMAGE=$DIR/xenial.img
-USERNAME=xenial
+USERNAME=kevy
 
 ARG_CHECK
 DOMAIN_CHECK
