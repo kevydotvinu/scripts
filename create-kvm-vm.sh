@@ -6,7 +6,7 @@
 # SYNOPSIS
 #	bash create_vm.sh
 #
-# DESCRIBTION
+# DESCRIPTION
 #	It creates VM in KVM with cloud images instantly
 #
 # CHANGELOG
