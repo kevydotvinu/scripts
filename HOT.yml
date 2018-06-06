@@ -1,0 +1,27 @@
+heat_template_version: 2013-05-23
+
+description: Simple template
+
+resources:
+  one:
+    type: "OS::Nova::Server"
+    properties:
+      key_name: keytwo
+      image: xenial
+      flavor: m1.small
+      networks:
+        - network: user_internal
+      user_data_format: RAW
+      user_data: |
+        #cloud-config
+        preserve_hostname: False
+        hostname: server
+        fqdn: server.example.local
+        users:
+          - name: kevy
+            plain_text_passwd: 'password'
+            lock-passwd: False
+            sudo: ['ALL=(ALL) NOPASSWD:ALL']
+            groups: sudo
+            shell: /bin/bash
+        ssh_pwauth: True
