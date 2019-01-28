@@ -1,0 +1,3 @@
+mail_compact.html filter=git-crypt diff=git-crypt
+mail_wide.html filter=git-crypt diff=git-crypt
+toruser.sh filter=git-crypt diff=git-crypt
