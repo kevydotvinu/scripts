@@ -1,4 +1,4 @@
-#!/bin/bash
+# #!/bin/bash
 #
 # NAME
 #	Find wheather target IP is up
@@ -13,21 +13,29 @@
 #	* Wed Jan 24 2018 <kevy.vinu@gmail.com>
 #	- Original code
 
+unset begin end VAR mac
 echo "Enter IP range of 172.16.1.0 network"
 read -p "begin: " begin
 read -p "end: " end
-for i in `seq $begin $end`; do ping -c1 -W 1 172.16.1.$i &>/dev/null; \
-if [[ $? == 0 ]]; then 
-echo -e "[\e[1;36mSUCCESS\e[m] 172.16.1.$i"
-#echo -e "172.16.1.$i [\e[1;36m SUCCESS \e[m]"
+if [[ -z "$begin" || -z "$end" ]]; then
+	echo -e "\e[1;37mNO RANGE ENTERED \e[m"
 else
-echo -e "[\e[1;31mFAILED\e[m]  172.16.1.$i"
-#echo -e "172.16.1.$i [\e[1;31m FAILED \e[m]"
-fi; 
-done; 
-VAR=`arp | grep "fc:aa:14:32:da:ce" | awk '{print $1}'`
+	for i in `seq $begin $end`; do ping -c1 -W 1 172.16.1.$i &>/dev/null; \
+		if [[ $? == 0 ]]; then 
+			echo -e "[\e[1;36mSUCCESS\e[m] 172.16.1.$i"
+		else
+			echo -e "[\e[1;31mFAILED\e[m]  172.16.1.$i"
+		fi; 
+	done;
+fi
+read -p "MAC: " mac
+if [[ -z "$mac" ]]; then
+	echo -e "\e[1;37mNO MAC \e[m"
+else
+	VAR=`arp | grep $mac | awk '{print $1}'`
+fi
 if [[ ! -z $VAR ]]; then
-echo -e "[\e[1;34mTARRGET\e[m] $VAR";
+	echo -e "[\e[1;34mTARRGET\e[m] $VAR";
 else
-echo -e "[\e[1;34mTARRGET\e[m] \e[1;37mDOWN \e[m";
+	echo -e "[\e[1;34mTARRGET\e[m] \e[1;37mUNKNOWN \e[m";
 fi
