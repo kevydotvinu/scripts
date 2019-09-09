@@ -1,0 +1,11 @@
+<h3>Windows OS installation using WinPE</h3>
+<p>Step 1: Get IP: <b>wpeinit</b></p>
+<p>Step 2: Confirm IP is assigned: <b>ipconfig</b><p>
+<p>Step 3: Map share directory: <b>net  use  I:  \\172.16.1.87\ISO\Win10  /user:user  pass</b></p>
+<p>Step 4: Start installation: <b>I:\setup.exe</b></p>
+<br>
+<h3>How to add Windows ISO image to PXE server</h3>
+<p>Step 1: Goto \\172.16.1.87\ISO</p>
+<p>Step 2: Create a folder to copy bootable DVD files. Name should be meaningful like Win10</p>
+<p>Step 3: Copy files inside the bootable DVD and paste it directly to the folder we created on step two</p>
+<p>Step 4: SSH to user@172.16.1.87 and restart PXE service: <b>sudo systemctl restart pxe</b> Put password: <b>password</b></p>

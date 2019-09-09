@@ -1,0 +1,32 @@
+version: "2"
+services: 
+  dnsmasq: 
+    build: 
+      context: "."
+    container_name: dnsmasq
+    image: "pxe:v1"
+    network_mode: host
+    volumes: 
+      - "./tftpboot:/var/lib/tftpboot"
+      - "./dnsmasq.conf:/etc/dnsmasq.conf"
+    command: ["sh","-c","/dnsmasq.sh"]
+  samba: 
+    build: 
+      context: "."
+    container_name: samba
+    image: "pxe:v1"
+    network_mode: host
+    volumes: 
+      - "./smb.conf:/etc/samba/smb.conf"
+      - "/home/user/ISO:/ISO"
+      - "/home/user/Public:/Public"
+    command: ["sh","-c","/smbd.sh"]
+  apache2:
+    build:
+      context: "."
+    container_name: apache2
+    image: "pxe:v1"
+    network_mode: host
+    volumes:
+      - "./index.html:/var/www/html/index.html"
+    command: ["sh","-c","/apache2.sh"]

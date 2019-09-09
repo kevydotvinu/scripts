@@ -28,10 +28,10 @@ function connect {
 	# Connects to instances
 	local COUNT=$(aws ec2 describe-instances \
 		--filters "Name=instance-state-name,Values=running" \
-		--output=table | grep PublicIpAdd | awk '{print $4}' | wc -l)
+		--output=json | grep PublicIpAddress | awk '{print $2}' | sed 's/"//g; s/,//g' | wc -l)
 	local IP=$(aws ec2 describe-instances \
 		--filters "Name=instance-state-name,Values=running" \
-		--output=table | grep PublicIpAdd | awk '{print $4}' | xargs)
+		--output=json | grep PublicIpAddress | awk '{print $2}' | sed 's/"//g; s/,//g' | xargs)
 	echo
 	if [[ COUNT != 1 ]]; then
 		select CHOICE in $IP exit
@@ -52,7 +52,7 @@ function terminate {
 	aws ec2 terminate-instances \
 		--instance-ids $(aws ec2 describe-instances \
 		--filters "Name=instance-state-name,Values=running" \
-		--output=table | grep -m1 InstanceId | awk '{print $4}')
+		--output=json | grep -m1 InstanceId | awk '{print $2}' | sed 's/"//g; s/,//g')
 }
 
 function stop {
@@ -61,7 +61,7 @@ function stop {
 	aws ec2 stop-instances \
 		--instance-ids $(aws ec2 describe-instances \
 		--filters "Name=instance-state-name,Values=running" \
-		--output=table | grep -m1 InstanceId | awk '{print $4}')
+		--output=json | grep -m1 InstanceId | awk '{print $2}' | sed 's/"//g; s/,//g')
 }
 
 function start {
@@ -69,8 +69,8 @@ function start {
 	echo
 	aws ec2 start-instances \
 		--instance-ids $(aws ec2 describe-instances \
-		--filters "Name=instance-state-name,Values=stopped" \
-		--output=table | grep -m1 InstanceId | awk '{print $4}')
+		--filter "Name=instance-state-name,Values=stopped" \
+		--output=json | grep -m1 InstanceId | awk '{print $2}' | sed 's/"//g; s/,//g')
 }
 
 function list {
@@ -79,7 +79,7 @@ function list {
 	echo PublicIP
 	aws ec2 describe-instances \
 		--filters "Name=instance-state-name,Values=running" \
-		--output=table | grep PublicIpAddress | awk '{print $4}'
+		--output=json | grep -m1 PublicIpAddress | awk '{print $2}' | sed 's/"//g; s/,//g'
 }
 
 # Runs script
