@@ -1,0 +1,17 @@
+#!/bin/bash
+
+BAT0=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep percentage | awk '{print $2}' | cut -f1 -d %)
+BAT1=$(upower -i /org/freedesktop/UPower/devices/battery_BAT1 | grep percentage | awk '{print $2}' | cut -f1 -d %)
+
+function BEEP {
+	/usr/bin/paplay /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga;
+}
+
+function NOTIFY {
+	/usr/bin/notify-send "Power" "Low Battery" -i /usr/share/icons/Adwaita/32x32/apps/gnome-power-manager-symbolic.symbolic.png;
+}
+
+if [[ ${BAT0} -lt 15 && ${BAT1} -lt 15 ]]; then
+	BEEP;
+	NOTIFY;
+fi
